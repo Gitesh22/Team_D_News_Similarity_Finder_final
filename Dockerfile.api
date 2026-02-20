@@ -19,8 +19,9 @@ RUN uv sync
  
 COPY src/ /app/src/ 
 COPY scripts/ /app/scripts/ 
- 
-RUN chown -R appuser:appuser /app 
+COPY artifacts/ /app/artifacts/
+
+RUN chown -R appuser:appuser /app
 USER appuser 
  
 EXPOSE 8000 
