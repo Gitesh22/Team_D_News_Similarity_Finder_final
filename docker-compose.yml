@@ -1,0 +1,23 @@
+services: 
+  api: 
+    build: 
+      context: . 
+      dockerfile: Dockerfile.api
+    container_name: news_similarity_api 
+    ports: 
+      - "8000:8000" 
+    restart: unless-stopped 
+ 
+  ui: 
+    build: 
+      context: . 
+      dockerfile: Dockerfile.streamlit 
+    container_name: news_similarity_ui 
+    environment: 
+      - API_BASE=http://api:8000 
+    ports: 
+      - "8501:8501" 
+    depends_on: 
+      api: 
+        condition: service_healthy 
+    restart: unless-stopped 
