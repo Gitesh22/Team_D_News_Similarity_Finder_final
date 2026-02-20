@@ -199,10 +199,13 @@ User Input → Frontend UI → REST API → Model Processing → Similar Article
 - Cross-platform compatibility (Windows/Linux/Mac)
 
 **Deployment Readiness**
-- Health check endpoint for monitoring
-- Graceful degradation when models unavailable
-- Configurable host/port settings
-- Auto-reload for development (`--reload` flag)
+- ✅ Docker containerization for consistent deployments
+- ✅ Docker Compose for multi-service orchestration
+- ✅ Health check endpoint for monitoring
+- ✅ Graceful degradation when models unavailable
+- ✅ Environment variable configuration
+- ✅ Auto-restart on failure
+- ✅ Optimized container builds with `.dockerignore`
 
 ---
 
@@ -387,34 +390,66 @@ uv run python scripts/train_tfidf.py
 ## 8️⃣ How to Run
 
 ### Prerequisites
-- **Python**: 3.13 or higher
-- **uv**: Fast Python package manager ([installation guide](https://docs.astral.sh/uv/))
-- **Operating System**: Windows, macOS, or Linux
+- **Docker & Docker Compose**: Recommended for production deployment
+  - OR **Python**: 3.11+ with **uv** package manager for local development
 
-### Quick Start
+### 🐳 Quick Start with Docker (Recommended)
 
 **1. Clone the Repository**
 ```bash
-git clone <repository-url>
-cd fastapi_news_similarity
+git clone https://github.com/Gitesh22/Team_D_News_Similarity_Finder_final.git
+cd Team_D_News_Similarity_Finder_final
 ```
 
-**2. Install Dependencies**
+**2. Start the Application**
+```bash
+docker-compose up --build -d
+```
+
+**3. Access the Application**
+- **Streamlit UI**: http://localhost:8501
+- **API**: http://localhost:8000
+- **API Documentation**: http://localhost:8000/docs
+- **Health Check**: http://localhost:8000/health
+
+**4. Stop the Application**
+```bash
+docker-compose down
+```
+
+### 💻 Local Development Setup
+
+**1. Clone the Repository**
+```bash
+git clone https://github.com/Gitesh22/Team_D_News_Similarity_Finder_final.git
+cd Team_D_News_Similarity_Finder_final
+```
+
+**2. Install uv** (if not already installed)
+```bash
+# Windows (PowerShell)
+irm https://astral.sh/uv/install.ps1 | iex
+
+# Linux/macOS
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+**3. Install Dependencies**
 ```bash
 uv sync
 ```
 
-**3. Start the Backend (Terminal 1)**
+**4. Start the Backend (Terminal 1)**
 ```bash
 uv run uvicorn news_similarity_api.app:app --app-dir src --host 127.0.0.1 --port 8000
 ```
 
-**4. Start the Frontend (Terminal 2)**
+**5. Start the Frontend (Terminal 2)**
 ```bash
 uv run streamlit run streamlit_app.py
 ```
 
-**5. Access the Application**
+**6. Access the Application**
 - **Streamlit UI**: http://localhost:8501
 - **API Documentation**: http://127.0.0.1:8000/docs
 - **Health Check**: http://127.0.0.1:8000/health
@@ -437,9 +472,40 @@ uv run ruff format .       # Format code
 uv run uvicorn news_similarity_api.app:app --app-dir src --reload
 ```
 
+### 🐳 Docker Configuration
+
+**Services**
+- **API Service** (`news_similarity_api`): FastAPI backend on port 8000
+- **UI Service** (`news_similarity_ui`): Streamlit frontend on port 8501
+
+**Features**
+- ✅ Health checks for API readiness
+- ✅ Auto-restart on failure
+- ✅ Environment variable configuration
+- ✅ Pre-loaded model artifacts
+- ✅ Optimized Docker builds with `.dockerignore`
+
+**Docker Commands**
+```bash
+# Build and start in detached mode
+docker-compose up --build -d
+
+# View logs
+docker-compose logs -f
+
+# Restart services
+docker-compose restart
+
+# Stop and remove containers
+docker-compose down
+
+# Check service status
+docker ps
+```
+
 ### Project Structure
 ```
-fastapi_news_similarity/
+Team_D_News_Similarity_Finder_final/
 ├── src/
 │   └── news_similarity_api/
 │       ├── app.py              # FastAPI application
@@ -451,10 +517,15 @@ fastapi_news_similarity/
 ├── scripts/
 │   ├── download_data.py        # Dataset download (optional)
 │   └── train_tfidf.py          # Model training
-├── artifacts/
+├── artifacts/                  # Model artifacts (committed)
 │   ├── articles.parquet        # Article dataset
 │   ├── tfidf.joblib            # TF-IDF vectorizer
 │   └── knn.joblib              # KNN model
+├── artefacts/                  # Alternative spelling (legacy)
+├── docker-compose.yml          # Docker orchestration
+├── Dockerfile.api              # API container definition
+├── Dockerfile.streamlit        # UI container definition
+├── .dockerignore               # Docker build optimization
 ├── streamlit_app.py            # Frontend UI
 └── pyproject.toml              # Dependencies
 ```
@@ -522,10 +593,28 @@ This will download and extract the AG News dataset into the `data/` directory.
 ## 📄 License & Contact
 
 **Project**: News Article Similarity Finder  
-**Version**: 0.1.0  
-**Authors**: [Your Team Name]  
-**Contact**: [Your Email]
+**Version**: 1.0.0  
+**Repository**: https://github.com/Gitesh22/Team_D_News_Similarity_Finder_final  
+**Team**: Team D  
 
 ---
 
-*Built with ❤️ using FastAPI, Streamlit, and Scikit-learn*
+## 🚀 Deployment
+
+### Production Deployment Checklist
+- ✅ Docker containers tested and working
+- ✅ Health checks configured
+- ✅ Model artifacts included in containers
+- ✅ Environment variables properly configured
+- ✅ API documentation available at `/docs`
+- ✅ Error handling implemented
+- ✅ Tests passing
+
+### Deployment Options
+1. **Docker Compose** (recommended for small-scale deployment)
+2. **Kubernetes** (for enterprise-scale deployment)
+3. **Cloud Platforms** (AWS ECS, Google Cloud Run, Azure Container Instances)
+
+---
+
+*Built with ❤️ using FastAPI, Streamlit, Scikit-learn, and Docker*
