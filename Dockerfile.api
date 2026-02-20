@@ -21,7 +21,7 @@ COPY src/ /app/src/
 COPY scripts/ /app/scripts/ 
 COPY artifacts/ /app/artifacts/
 
-RUN chown -R appuser:appuser /app
+RUN chown -R appuser:appuser /app 
 USER appuser 
  
 EXPOSE 8000 

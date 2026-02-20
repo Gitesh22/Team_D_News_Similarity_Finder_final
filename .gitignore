@@ -2,6 +2,5 @@
 __pycache__/
 *.pyc
 data/
-artifacts/
 .pytest_cache/
 .ruff_cache/
